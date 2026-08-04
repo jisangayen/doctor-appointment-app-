@@ -7,7 +7,7 @@ const Contact = () => {
       {/* Header - Simple & Spaced */}
       <div className="text-center mb-20">
         <h1 className="text-3xl font-light tracking-tight text-slate-800">
-          CONTACT <span className="font-semibold text-slate-950 underline underline-offset-[12px] decoration-1 decoration-slate-200">US</span>
+          CONTACT <span className="font-semibold text-slate-950 underline underline-offset-12 decoration-1 decoration-slate-200">US</span>
         </h1>
       </div>
 

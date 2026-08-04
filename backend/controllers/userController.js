@@ -4,6 +4,7 @@ import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
+import patientModel from "../models/patientModel.js";
 
 
 //api to register uer
@@ -77,10 +78,15 @@ const loginUser = async (req, res) => {
 
 const bookAppointment = async (req, res) => {
   try {
-    const { userId, docId, slotDate, slotTime } = req.body;
-
+    const { userId, patientId, docId, slotDate, slotTime } = req.body;
     const docData = await doctorModel.findById(docId).select("-password");
 
+    if (!docData) {
+      return res.json({
+        success: false,
+        message: "Doctor not found",
+      });
+    }
     if (!docData.available) {
       return res.json({
         success: false,
@@ -88,54 +94,86 @@ const bookAppointment = async (req, res) => {
       });
     }
 
-    let slots_booked = docData.slots_booked;
+    // Check patient
+    const patientData = await patientModel.findById(patientId);
 
-    //checking for slots available
+    if (!patientData) {
+      return res.json({
+        success: false,
+        message: "Patient not found",
+      });
+    }
 
+    let slots_booked = docData.slots_booked || {};
+
+    // Check slot availability
     if (slots_booked[slotDate]) {
       if (slots_booked[slotDate].includes(slotTime)) {
-        return res.json({ success: false, message: "Slot is already booked." });
+        return res.json({
+          success: false,
+          message: "Slot is already booked.",
+        });
       } else {
         slots_booked[slotDate].push(slotTime);
       }
     } else {
-      slots_booked[slotDate] = [];
-      slots_booked[slotDate].push(slotTime);
+      slots_booked[slotDate] = [slotTime];
     }
 
-    const userData = await userModel.findById(userId).select("-password");
-
-    delete docData.slots_booked;
+    // Remove slots before saving snapshot
+    const doctorSnapshot = docData.toObject();
+    delete doctorSnapshot.slots_booked;
 
     const appointmentData = {
       userId,
+      patientId,
       docId,
-      slotTime,
-      userData,
-      docData,  
+      patientData,
+      docData: doctorSnapshot,
       amount: docData.fees,
-    
       slotDate,
+      slotTime,
       date: Date.now(),
     };
 
     const newAppointment = new appointmentModel(appointmentData);
+
     await newAppointment.save();
 
-    //save new slots data in doc data
+    // Update doctor's booked slots
+    await doctorModel.findByIdAndUpdate(docId, {
+      slots_booked,
+    });
 
-    await doctorModel.findByIdAndUpdate(docId,{slots_booked})
-
-    res.json({ success: true, message: "Appointment Booked Successfully." });
-
-
-
-
-
-
+    res.json({
+      success: true,
+      message: "Appointment Booked Successfully.",
+    });
   } catch (error) {
     console.log(error);
-    return res.json({ success: false, message: error.message });
+
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+//details for user data 
+const getProfile = async (req, res) => {
+  try {
+    const user = await userModel
+      .findById(req.body.userId)
+      .select("-password");
+
+    res.json({
+      success: true,
+      userData: user,
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
@@ -196,7 +234,9 @@ const cancelAppointment = async (req, res) => {
 }
 
 
+
+
 //API to make payment of appointment using Razorpay
 
 
-export { registerUser, loginUser,bookAppointment,listAppointment, cancelAppointment };
+export { registerUser, loginUser,bookAppointment, getProfile, listAppointment, cancelAppointment };

@@ -5,8 +5,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-const {backendUrl, token, setToken} = useContext(AppContext)
-const navigate = useNavigate()
+  const { backendUrl, token, setToken } = useContext(AppContext);
+  const navigate = useNavigate();
 
   const [state, setState] = useState("Sign Up");
 
@@ -18,45 +18,44 @@ const navigate = useNavigate()
     event.preventDefault();
 
     try {
-      if (state === 'Sign Up') {
-        const {data} = await axios.post(backendUrl + '/api/user/register', {name, password,email})
+      if (state === "Sign Up") {
+        const { data } = await axios.post(backendUrl + "/api/user/register", {
+          name,
+          password,
+          email,
+        });
         if (data.success) {
           toast.success("Registration successful! Please log in.");
-          setState('Login')
+          setState("Login");
           setName("");
           setEmail("");
           setPassword("");
-        }else{
-          toast.error(data.message)
+        } else {
+          toast.error(data.message);
         }
-
-        
-      }else{
-
-        const {data} = await axios.post(backendUrl + '/api/user/login', {password,email})
+      } else {
+        const { data } = await axios.post(backendUrl + "/api/user/login", {
+          password,
+          email,
+        });
         if (data.success) {
-          localStorage.setItem('token', data.token)
-          setToken(data.token)
-          toast.success("Successfully Login!")
-        }else{
-          toast.error(data.message)
+          localStorage.setItem("token", data.token);
+          setToken(data.token);
+          toast.success("Successfully Login!");
+        } else {
+          toast.error(data.message);
         }
-
       }
-      
     } catch (error) {
-      toast.error(error.message)
-      
+      toast.error(error.message);
     }
-
-
   };
 
-  useEffect (()=>{
-    if(token){
-      navigate('/')
+  useEffect(() => {
+    if (token) {
+      navigate("/");
     }
-  })
+  });
 
   return (
     <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
@@ -65,16 +64,17 @@ const navigate = useNavigate()
           {state === "Sign Up" ? "Create Account" : "Login"}
         </p>
         <p>
-          Please {state === "Sign Up" ? "sign up" : "log in"} to book an appointment
+          Please {state === "Sign Up" ? "sign up" : "log in"} to book an
+          appointment
         </p>
-{/* 
+        {/* 
            {error && <p className="text-red-600">{error}</p>} */}
 
         {state === "Sign Up" && (
           <div className="w-full">
             <p>Full Name</p>
             <input
-              className="border border-zinc-300 rounded w-full p-2 mt-1"
+              className="border border-zinc-300 rounded-sm w-full p-2 mt-1"
               type="text"
               placeholder="Enter your full name"
               onChange={(e) => setName(e.target.value)}
@@ -86,7 +86,7 @@ const navigate = useNavigate()
         <div className="w-full">
           <p>Email</p>
           <input
-            className="border border-zinc-300 rounded w-full p-2 mt-1"
+            className="border border-zinc-300 rounded-sm w-full p-2 mt-1"
             type="email"
             placeholder="Enter your email"
             onChange={(e) => setEmail(e.target.value)}
@@ -97,7 +97,7 @@ const navigate = useNavigate()
         <div className="w-full">
           <p>Password</p>
           <input
-            className="border border-zinc-300 rounded w-full p-2 mt-1"
+            className="border border-zinc-300 rounded-sm w-full p-2 mt-1"
             type="password"
             placeholder="Enter your password (min 6 characters)"
             onChange={(e) => setPassword(e.target.value)}
@@ -113,10 +113,6 @@ const navigate = useNavigate()
         </button>
 
         {state === "Sign Up" ? (
-
-
-
-
           <p>
             Already have an account?{" "}
             <span
