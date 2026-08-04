@@ -23,6 +23,7 @@ const AppRoutes = () => {
         <Route path="/my-appointments" element={<MyAppointments />} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/appointment/:docId" element={<Appointment />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
      
      </Routes>
     </>
