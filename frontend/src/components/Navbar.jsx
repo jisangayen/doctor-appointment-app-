@@ -19,13 +19,22 @@ const Navbar = () => {
 
   return (
     <div className="relative">
-      <div className="flex justify-between items-center text-sm py-4 mb-5 border-b border-b-gray-400">
-        <img
-          onClick={() => navigate("./")}
-          className="md:w-40 cursor-pointer w-24"
-          src={assets.logo}
+      <div className="flex justify-between items-center text-sm py-2   mb-5 border-b border-b-gray-400">
+        <div 
+        onClick={() => navigate("./")}
+        className="inline-flex items-center cursor-pointer group select-none">
+          <img
+          
+          className="w-12  md:w-20 cursor-pointer "
+          src={assets.doclogo}
           alt="Logo"
         />
+        <p className="text-md sm:text-xl font-extrabold tracking-tight text-slate-900">Clinic
+          <span className="text-primary">Go</span>
+        </p>
+
+        </div>
+        
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex gap-5 items-start font-medium">

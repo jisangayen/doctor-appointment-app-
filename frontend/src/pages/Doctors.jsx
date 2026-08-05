@@ -44,7 +44,7 @@ const Doctors = () => {
   };
 
   const specialtiesList = [
-    "General physician",
+    "Generalphysician",
     "Gynecologist",
     "Dermatologist",
     "Pediatricians",
