@@ -7,7 +7,7 @@ const TopDoctors = () => {
   const { doctors } = useContext(AppContext);
 
   return (
-    <div className="flex flex-col items-center gap-4 my-12 md:my-16 text-slate-900 mx-4 sm:mx-10">
+    <div className="flex flex-col items-center gap-4 my-12 md:my-5 text-slate-900 mx-4 sm:mx-10">
       {/* Section Header */}
       <div className="text-center max-w-xl mx-auto mb-2">
         <span className="text-xs font-bold text-primary uppercase tracking-wider bg-primary/10 px-3 py-1 rounded-full">
@@ -24,7 +24,7 @@ const TopDoctors = () => {
       {/* Doctors Grid */}
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 pt-4">
         {doctors &&
-          doctors.slice(0, 12).map((item, index) => (
+          doctors.slice(0, 5).map((item, index) => (
             <div
               key={item._id || index}
               onClick={() => {

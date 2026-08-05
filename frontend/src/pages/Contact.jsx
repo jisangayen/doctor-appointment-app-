@@ -3,52 +3,120 @@ import { assets } from "../assets/assets";
 
 const Contact = () => {
   return (
-    <div className="max-w-5xl mx-auto px-6 py-16">
-      {/* Header - Simple & Spaced */}
-      <div className="text-center mb-20">
-        <h1 className="text-3xl font-light tracking-tight text-slate-800">
-          CONTACT <span className="font-semibold text-slate-950 underline underline-offset-12 decoration-1 decoration-slate-200">US</span>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8  text-slate-800">
+      {/* Section Header */}
+      <div className="text-center max-w-xl mx-auto mb-6">
+        <h1 className="text-3xl sm:text-4xl font-light tracking-tight text-slate-800">
+          CONTACT{" "}
+          <span className="font-extrabold text-slate-900 relative">
+            US
+            <span className="absolute bottom-0 left-0 w-full h-1 bg-primary/40 rounded-full" />
+          </span>
         </h1>
       </div>
 
-      <div className="flex flex-col md:flex-row items-center justify-center gap-16 md:gap-24">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
         
-        {/* Visual Aspect - Clean border-radius */}
-        <div className="w-full md:w-1/2">
-          <img
-            className="w-full max-w-md mx-auto rounded-2xl grayscale hover:grayscale-0 transition-all duration-700 ease-in-out"
-            src={assets.contact_image}
-            alt="Office space"
-          />
-        </div>
-
-        {/* Content Aspect - Organized by hierarchy */}
-        <div className="w-full md:w-1/2 flex flex-col gap-10 text-sm md:text-base">
+        {/* Left Column: Glassmorphic Visual Card */}
+        <div className="md:col-span-5 relative group">
+          <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-indigo-500/20 rounded-3xl blur-xl opacity-30 group-hover:opacity-50 transition duration-500 pointer-events-none" />
           
-          <section>
-            <h2 className="text-xs uppercase tracking-[0.2em] text-slate-400 font-bold mb-4">Our Office</h2>
-            <div className="text-slate-600 leading-relaxed">
-              <p>54709 Willms Station</p>
-              <p>Suite 350, Washington, USA</p>
-              <div className="mt-4">
-                <p>Tel: <span className="text-slate-900">(415) 555-0132</span></p>
-                <p>Email: <span className="text-slate-900 underline decoration-slate-200">hello@prescripto.com</span></p>
+          <div className="relative h-full rounded-3xl overflow-hidden border border-white/60 bg-white/70 backdrop-blur-md shadow-xl shadow-slate-200/50 p-3 flex flex-col justify-between">
+            {/* Inner Image Frame */}
+            <div className="relative rounded-2xl overflow-hidden aspect-[4/3] sm:aspect-[1/1] bg-slate-100">
+              <img
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                src={assets.contact_image}
+                alt="ClinicGo Office"
+              />
+              
+              {/* Floating Top Badge */}
+              <div className="absolute top-3 right-3 bg-white/80 backdrop-blur-md px-3 py-1 rounded-full border border-white/50 text-[11px] font-bold text-slate-800 shadow-xs">
+                ClinicGo HQ
               </div>
             </div>
-          </section>
 
-          <section>
-            <h2 className="text-xs uppercase tracking-[0.2em] text-slate-400 font-bold mb-4">Careers</h2>
-            <p className="text-slate-600 mb-6">
-              Always looking for talent to join our global teams.
-            </p>
-            <button className="group relative px-10 py-4 overflow-hidden border border-slate-900 bg-white text-slate-900 transition-all duration-300 hover:text-white">
-              <span className="absolute inset-0 w-0 bg-slate-900 transition-all duration-300 ease-out group-hover:w-full"></span>
-              <span className="relative">Explore Openings</span>
+            {/* Card Footer Highlights */}
+            <div className="mt-4 p-3 flex items-center justify-between text-xs text-slate-600 font-medium">
+              <span className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                Support Available 24/7
+              </span>
+              <span className="text-slate-400">HQ • Bengalore, IND</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Information Cards */}
+        <div className="md:col-span-7 flex flex-col mt-10 gap-6">
+          
+          {/* Office Info Glass Card */}
+          <div className="bg-white/80 backdrop-blur-md border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-sm">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-primary mb-4 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-primary" />
+              Our Office
+            </h2>
+
+            <div className="text-slate-700 text-sm leading-relaxed mb-6 font-medium">
+              <p className="text-base font-bold text-slate-900">54709 Willms Station</p>
+              <p className="text-slate-500">257/258 Whitefield, Bengalore, IND</p>
+            </div>
+
+            {/* Contact Pills */}
+            <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-slate-100">
+              <a
+                href="tel:4155550132"
+                className="flex-1 bg-slate-50 hover:bg-primary/5 border border-slate-200/80 hover:border-primary/30 p-3 rounded-2xl flex items-center gap-3 transition-all group"
+              >
+                <div className="w-9 h-9 rounded-xl bg-white text-primary flex items-center justify-center font-bold text-base shadow-xs group-hover:bg-primary group-hover:text-white transition-colors">
+                  📞
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase text-slate-400">Phone</p>
+                  <p className="text-xs font-bold text-slate-800">(415) 555-0132</p>
+                </div>
+              </a>
+
+              <a
+                href="mailto:hello@prescripto.com"
+                className="flex-1 bg-slate-50 hover:bg-primary/5 border border-slate-200/80 hover:border-primary/30 p-3 rounded-2xl flex items-center gap-3 transition-all group"
+              >
+                <div className="w-9 h-9 rounded-xl bg-white text-primary flex items-center justify-center font-bold text-base shadow-xs group-hover:bg-primary group-hover:text-white transition-colors">
+                  ✉️
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase text-slate-400">Email</p>
+                  <p className="text-xs font-bold text-slate-800 truncate">hello@prescripto.com</p>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          {/* Careers Section Glass Card */}
+          <div className="bg-white/80 backdrop-blur-md border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div>
+              <h2 className="text-xs font-bold uppercase tracking-widest text-primary mb-1">
+                Careers at ClinicGo
+              </h2>
+              <h3 className="text-lg font-bold text-slate-900">
+                Join Our Global Team
+              </h3>
+              <p className="text-slate-500 text-xs mt-1 max-w-sm">
+                We are always looking for dynamic talent to help us build the future of healthcare.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              className="group shrink-0 bg-slate-900 hover:bg-primary text-white font-semibold text-xs px-6 py-3.5 rounded-2xl shadow-md transition-all duration-300 active:scale-95 flex items-center gap-2 cursor-pointer"
+            >
+              <span>Explore Openings</span>
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
             </button>
-          </section>
+          </div>
 
         </div>
+
       </div>
     </div>
   );
