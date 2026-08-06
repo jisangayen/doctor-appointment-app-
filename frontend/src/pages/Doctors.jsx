@@ -7,15 +7,32 @@ const Doctors = () => {
   const [filterDoc, setFilterDoc] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
   const [activeSpeciality, setActiveSpeciality] = useState(speciality || "");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const { doctors } = useContext(AppContext);
 
+  // Synchronize state when URL param changes
+  useEffect(() => {
+    setActiveSpeciality(speciality || "");
+  }, [speciality]);
+
   const applyFilter = () => {
-    if (speciality) {
-      setFilterDoc(doctors.filter((doc) => doc.speciality === speciality));
+    if (doctors && doctors.length > 0) {
+      if (speciality) {
+        setFilterDoc(
+          doctors.filter(
+            (doc) =>
+              doc.speciality.toLowerCase() ===
+              decodeURIComponent(speciality).toLowerCase()
+          )
+        );
+      } else {
+        setFilterDoc(doctors);
+      }
+      setLoading(false);
     } else {
-      setFilterDoc(doctors);
+      setLoading(true);
     }
   };
 
@@ -32,7 +49,7 @@ const Doctors = () => {
       navigate(
         spec === "All Doctors"
           ? "/doctors"
-          : `/doctors/${encodeURIComponent(spec)}`,
+          : `/doctors/${encodeURIComponent(spec)}`
       );
     }
   };
@@ -44,7 +61,7 @@ const Doctors = () => {
   };
 
   const specialtiesList = [
-    "Generalphysician",
+    "General physician",
     "Gynecologist",
     "Dermatologist",
     "Pediatricians",
@@ -110,31 +127,55 @@ const Doctors = () => {
 
         {/* Doctors Grid Container */}
         <div className="w-full">
-          {filterDoc.length === 0 ? (
+          {loading ? (
+            /* Skeleton Loading State */
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm flex flex-col animate-pulse"
+                >
+                  {/* Skeleton Image */}
+                  <div className="bg-gray-200 aspect-[4/3] w-full" />
+
+                  {/* Skeleton Content */}
+                  <div className="p-5 flex flex-col flex-grow gap-3">
+                    <div className="h-5 bg-gray-200 rounded-md w-3/4" />
+                    <div className="h-4 bg-gray-200 rounded-md w-1/2" />
+                    <div className="mt-auto pt-3 border-t border-gray-50 flex items-center justify-between">
+                      <div className="h-4 bg-gray-200 rounded-md w-1/3" />
+                      <div className="h-4 w-4 bg-gray-200 rounded-full" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : filterDoc.length === 0 ? (
+            /* Empty State */
             <div className="flex flex-col items-center justify-center p-12 bg-gray-50 rounded-2xl border border-dashed border-gray-200 text-center">
               <p className="text-gray-500 font-medium">
                 No doctors found for this specialty.
               </p>
             </div>
           ) : (
+            /* Doctor Cards Grid */
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {filterDoc.map((item, index) => (
                 <div
                   onClick={() => navigate(`/appointment/${item._id}`)}
                   className="group bg-white border border-gray-100 rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
-                  key={index}
+                  key={item._id || index}
                 >
                   {/* Doctor Image Container */}
                   <div className="relative bg-gradient-to-b from-blue-50 to-blue-100/60 overflow-hidden aspect-[4/3]">
-                    {/* --- START: Available Overlay --- */}
-                    <div className="absolute top-1 right-1 z-10 flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-white/80 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm">
+                    {/* Available Overlay */}
+                    <div className="absolute top-2 right-2 z-10 flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-white/80 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm">
                       <span className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                       </span>
                       <span>Available</span>
                     </div>
-                    {/* --- END: Available Overlay --- */}
 
                     <img
                       className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
